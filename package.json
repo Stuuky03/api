@@ -9,6 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^8.3.0",
+    "@paralleldrive/cuid2": "^2.2.2",
     "fastify": "^4.21.0"
   },
   "devDependencies": {

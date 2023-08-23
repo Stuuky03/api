@@ -10,4 +10,4 @@ app.post("/user/create", (request) => {
   return reply;
 })
 
-app.listen({ port: 7777, host: "localhost" }).then(() => console.log('Hello Server!'));
+app.listen({ port: 7777, host: "192.168.2.158" }).then(() => console.log('Hello Server!'));
