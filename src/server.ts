@@ -1,13 +1,20 @@
+import fastify from "fastify";
+import { FastifyRequest } from "fastify";
 import { app } from "./app";
+require ("dotenv").config();
 
 app.get("/", () => {
-  return "Hello World";
+  return "Server running!";
 })
-app.post("/user/create", (request) => {
+
+app.post("/user/create", ( request:FastifyRequest ) => {
   const reply = JSON.stringify(request.body);
 
   console.log(reply);
   return reply;
 })
+ 
+const port = process.env.PORT;
+const host = process.env.HOST;
 
-app.listen({ port: 7777, host: "192.168.2.158" }).then(() => console.log('Hello Server!'));
+app.listen({ port: Number(port), host: String(host) }).then(() => console.log('Serving is running on port ' + port));

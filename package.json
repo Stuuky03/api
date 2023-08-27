@@ -10,7 +10,9 @@
   "dependencies": {
     "@fastify/cors": "^8.3.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "fastify": "^4.21.0"
+    "dotenv": "^16.3.1",
+    "fastify": "^4.22.0",
+    "prisma": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.3",
