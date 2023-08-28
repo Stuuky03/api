@@ -9,7 +9,15 @@ const prisma = new PrismaClient({
 export class SqlLiteStudentRepository implements IStudentRepository {
   async findByEmail(email: string): Promise<boolean> {
     const user = await prisma.student.findFirst({
-      where: { email },
+      where: { email }
+    })
+
+    return user ? true : false
+  }
+
+  async findByUser(username: string): Promise<boolean> {
+    const user = await prisma.student.findFirst({
+      where: { username }
     })
 
     return user ? true : false

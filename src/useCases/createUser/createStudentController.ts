@@ -25,7 +25,7 @@ export class CreateStudentController {
 
       return reply.status(201).send();
     } catch (err: any) {
-      return reply.code(400).send({
+      return reply.code(200).send({
         message: err.message || 'unexpected error.'
       });
     }
