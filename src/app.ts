@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { ApolloServer, BaseContext } from "@apollo/server";
 import fastifyApollo, { fastifyApolloDrainPlugin } from "@as-integrations/fastify";
+import { fastifyApolloHandler } from "@as-integrations/fastify";
 import { gql } from "apollo-server";
 import { Student } from "./modules/Student";
 
@@ -45,8 +46,13 @@ async function Bootstrap(){
   
   app.register(
     fastifyApollo(apollo)
-  )
-  
+  );
+
+  app.route({
+    url: "/graphql",
+    method: ["POST", "OPTIONS"],
+    handler: fastifyApolloHandler(apollo),
+  });
 }
 
 export { app };
