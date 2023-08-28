@@ -8,22 +8,18 @@ datasource db {
 }
 
 model student {
-  id String @id
-  firstName String
-  lastName String
-  username String @unique
-  email String @unique
+  id       String   @id
+  username String   @unique
+  email    String   @unique
   password String
-  profileImgUrl String @unique
-  description String
   stuukies Stuuke[]
-  }
+}
 
 model Stuuke {
-  id String @id
-  title String
-  content String
+  id        String   @id
+  title     String
+  content   String
   createdAt DateTime
-  student student @relation(fields: [studentId], references: [id])
+  student   student  @relation(fields: [studentId], references: [id])
   studentId String
 }
