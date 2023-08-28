@@ -14,7 +14,7 @@ model student {
   username String @unique
   email String @unique
   password String
-  profileImg String @unique
+  profileImgUrl String @unique
   description String
   stuukies Stuuke[]
   }

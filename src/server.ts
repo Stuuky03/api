@@ -9,8 +9,6 @@ app.get("/", () => {
 
 app.post("/user/create", ( request:FastifyRequest ) => {
   const reply = JSON.stringify(request.body);
-
-  console.log(reply);
   return reply;
 })
  
