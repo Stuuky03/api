@@ -10,40 +10,40 @@ const app = Fastify({
   logger: true,
 })
 
-async function Bootstrap(){
-  
+async function Bootstrap() {
+
   const typeDefs = gql`
-  type Student {
-    id: String
-    firstName: String
-    lastName: String
-    username: String
-    email: String
-    password: String
-    profileImgUrl: String
-    description: String
-  }
-  type Query {
-    student: [Student]
-  }
+    type Student {
+      id: String
+      firstName: String
+      lastName: String
+      username: String
+      email: String
+      password: String
+      profileImgUrl: String
+      description: String
+    }
+    type Query {
+      student: [Student]
+    }
   `
-  
+
   const apollo = new ApolloServer<BaseContext>({
     typeDefs,
-    resolvers:{
+    resolvers: {
       Query: {
         student: () => Student
       }
     },
     plugins: [fastifyApolloDrainPlugin(app)],
   });
-  
+
   await apollo.start();
-  
+
   app.register(cors, {
     origin: true,
   });
-  
+
   app.register(
     fastifyApollo(apollo)
   );
@@ -54,5 +54,6 @@ async function Bootstrap(){
     handler: fastifyApolloHandler(apollo),
   });
 }
+
 
 export { app };
