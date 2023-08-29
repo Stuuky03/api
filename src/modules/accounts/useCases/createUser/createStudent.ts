@@ -12,13 +12,14 @@ export class CreateStudent {
   ) { }
 
   async execute(data: ICreateStudentRequestDTO) {
+    console.log(`data execute: ${JSON.stringify(data)}`);
 
-    const userEmailAlreadyExists = await this.studentRepository.findByEmail(data.email);
-    if (userEmailAlreadyExists) {
+    const emailAlreadyExists = await this.studentRepository.findByEmail(data.email);
+    if (emailAlreadyExists) {
       throw new Error('Usuário com este e-mail já existe');
     }
-    const userUsernameAlreadyExists = await this.studentRepository.findByUser(data.username);
-    if (userUsernameAlreadyExists) {
+    const usernameAlreadyExists = await this.studentRepository.findByUser(data.username);
+    if (usernameAlreadyExists) {
       throw new Error('Usuário com este nome de usuário já existe');
     }
 
