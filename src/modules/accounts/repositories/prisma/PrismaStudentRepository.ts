@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { IStudentRepository } from "../IStudentRepository";
-import { Student } from "../../modules/Student";
+import { IStudentRepository } from "../../repositories/IStudentRepository";
+import { Student } from "../../domain/Student";
 
 const prisma = new PrismaClient({
   log: ["query"]
 })
 
-export class SqlLiteStudentRepository implements IStudentRepository {
+export class PrismaStudentRepository implements IStudentRepository {
   async findByEmail(email: string): Promise<boolean> {
     const user = await prisma.student.findFirst({
       where: { email }

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { app } from "./app";
-import { env } from "./env";
-import { createStudentController } from "./index";
+import { env } from "@/env";
+import { createStudentController } from "./factories/controllers/CreateUserControllerFactory";
 
 app.get("/", () => {
   return "Server running!";

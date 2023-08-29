@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/infra/http/server.ts"
   },
   "author": "Stuuky Team",
   "license": "ISC",
+  "_moduleAliases": {
+    "@": "src"
+  },
   "dependencies": {
     "@apollo/server": "^4.9.2",
     "@as-integrations/fastify": "^2.1.0",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.5.3",
+    "module-alias": "^2.2.3",
     "prisma": "^5.2.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
