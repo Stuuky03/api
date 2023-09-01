@@ -16,7 +16,6 @@ export class CreateStudentController implements Controller {
   ) { }
 
   async handle({ username, email, password }: CreateStudentControllerRequest): Promise<HttpResponse> {
-
     try {
       await this.CreateStudent.execute({
         username,
