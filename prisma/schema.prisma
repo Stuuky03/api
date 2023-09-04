@@ -2,17 +2,47 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model student {
-  id       String   @id
-  username String   @unique
-  email    String   @unique
-  password String
-  stuukies Stuuke[]
+model Student {
+  id            String          @id
+  firstName     String
+  lastName      String
+  username      String          @unique
+  email         String          @unique
+  password      String
+  bio           String
+  badges        StudentBadges[]
+  badges_count  Int             @default(0)
+  stuukes       Stuuke[]
+  stuukes_count Int             @default(0)
+
+  @@map("student")
+}
+
+model StudentBadges {
+  id        String   @id @default(uuid())
+  earnedAt  DateTime
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId String
+  badge     Badge[]
+}
+
+model Badge {
+  id              String        @id @default(uuid())
+  name            String
+  description     String
+  imageUrl        String
+  StudentBadges   StudentBadges @relation(fields: [studentBagdesId], references: [id])
+  studentBagdesId String
 }
 
 model Stuuke {
@@ -20,6 +50,8 @@ model Stuuke {
   title     String
   content   String
   createdAt DateTime
-  student   student  @relation(fields: [studentId], references: [id])
+  student   Student  @relation(fields: [studentId], references: [id])
   studentId String
+
+  @@map("stuuke")
 }
