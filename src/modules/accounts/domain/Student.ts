@@ -2,7 +2,6 @@ import { createId } from "@paralleldrive/cuid2";
 
 export class Student {
   private readonly _id: string;
-  public firstName: string;
   public username: string;
   public email: string;
   public password: string;
@@ -12,8 +11,7 @@ export class Student {
   }
 
   constructor(props: Omit<Student, 'id'>) {
-    const { firstName, username, email, password } = props;
-    this.firstName = firstName;
+    const { username, email, password } = props;
     this.username = username;
     this.email = email;
     this.password = password;
