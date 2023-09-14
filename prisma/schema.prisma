@@ -13,19 +13,33 @@ datasource db {
 }
 
 model Student {
-  id            String          @id
+  id            String                @id
   firstName     String
-  lastName      String
-  username      String          @unique
-  email         String          @unique
+  username      String                @unique
+  email         String                @unique
   password      String
-  bio           String
+  bio           String?
   badges        StudentBadges[]
-  badges_count  Int             @default(0)
+  badges_count  Int                   @default(0)
+  points        StudentPoints[]
   stuukes       Stuuke[]
-  stuukes_count Int             @default(0)
+  stuukes_count Int                   @default(0)
+  questions     Question[]
+  notifications StudentNotification[]
 
   @@map("student")
+}
+
+model StudentPoints {
+  id        String  @id
+  points    Int     @default(0)
+  semester  Int
+  year      Int
+  Student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+
+  @@index([semester, year, studentId], name: "points_semester_year_idx")
+  @@map("studentPoints")
 }
 
 model StudentBadges {
@@ -34,6 +48,8 @@ model StudentBadges {
   student   Student  @relation(fields: [studentId], references: [id])
   studentId String
   badge     Badge[]
+
+  @@map("studentBadges")
 }
 
 model Badge {
@@ -41,17 +57,50 @@ model Badge {
   name            String
   description     String
   imageUrl        String
-  StudentBadges   StudentBadges @relation(fields: [studentBagdesId], references: [id])
+  studentBadges   StudentBadges @relation(fields: [studentBagdesId], references: [id])
   studentBagdesId String
 }
 
-model Stuuke {
+model StudentNotification {
+  id        String  @id @default(uuid())
+  title     String
+  message   String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+}
+
+model Question {
   id        String   @id
   title     String
   content   String
   createdAt DateTime
   student   Student  @relation(fields: [studentId], references: [id])
   studentId String
+  stuukes   Stuuke[]
+
+  @@map("question")
+}
+
+model Stuuke {
+  id         String             @id
+  title      String
+  content    String
+  createdAt  DateTime
+  references StuukeReferences[]
+  student    Student            @relation(fields: [studentId], references: [id])
+  studentId  String
+  Question   Question           @relation(fields: [questionId], references: [id])
+  questionId String
 
   @@map("stuuke")
+}
+
+model StuukeReferences {
+  id       String @id
+  title    String
+  url      String
+  stuuke   Stuuke @relation(fields: [stuukeId], references: [id])
+  stuukeId String
+
+  @@map("stuukeReferences")
 }
