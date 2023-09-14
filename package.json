@@ -15,7 +15,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.3.0",
     "dotenv": "^16.3.1",
-    "fastify": "^4.22.0",
+    "fastify": "^4.23.2",
     "graphql": "^16.8.0",
     "zod": "^3.22.2"
   },

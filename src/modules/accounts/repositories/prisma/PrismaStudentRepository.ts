@@ -31,9 +31,10 @@ export class PrismaStudentRepository implements IStudentRepository {
     await prisma.student.create({
       data: {
         id: Student.id,
+        firstName: Student.firstName,
         username: Student.username,
         email: Student.email,
-        password: Student.password,
+        password: Student.password
       }
     })
   }
