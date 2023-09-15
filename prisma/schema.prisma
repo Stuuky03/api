@@ -13,52 +13,55 @@ datasource db {
 }
 
 model Student {
-  id            String                @id
-  firstName     String
-  username      String                @unique
-  email         String                @unique
-  password      String
-  bio           String?
-  badges        StudentBadges[]
-  badges_count  Int                   @default(0)
-  points        StudentPoints[]
-  stuukes       Stuuke[]
-  stuukes_count Int                   @default(0)
-  questions     Question[]
-  notifications StudentNotification[]
+  id                  String                @id
+  firstName           String
+  lastName            String
+  username            String                @unique
+  email               String                @unique
+  password            String
+  bio                 String?
+  badges              StudentBadges?
+  badgesCount         Int                   @default(0)
+  points              StudentPoints[]
+  leaderBoardPosition Int
+  stuukes             Stuuke[]
+  stuukesCount        Int                   @default(0)
+  questions           Question[]
+  qustionsCount       Int
+  notifications       StudentNotification[]
 
   @@map("student")
 }
 
 model StudentPoints {
-  id        String  @id
   points    Int     @default(0)
   semester  Int
   year      Int
-  Student   Student @relation(fields: [studentId], references: [id])
-  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @id @unique
 
   @@index([semester, year, studentId], name: "points_semester_year_idx")
   @@map("studentPoints")
 }
 
 model StudentBadges {
-  id        String   @id @default(uuid())
   earnedAt  DateTime
   student   Student  @relation(fields: [studentId], references: [id])
-  studentId String
-  badge     Badge[]
+  studentId String   @id @unique
+  badge     Badge?   @relation(fields: [badgeId], references: [id])
+  badgeId   String?
 
   @@map("studentBadges")
 }
 
 model Badge {
-  id              String        @id @default(uuid())
-  name            String
-  description     String
-  imageUrl        String
-  studentBadges   StudentBadges @relation(fields: [studentBagdesId], references: [id])
-  studentBagdesId String
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  imageUrl      String
+  studentBadges StudentBadges[]
+
+  @@map("badge")
 }
 
 model StudentNotification {
@@ -67,6 +70,8 @@ model StudentNotification {
   message   String
   student   Student @relation(fields: [studentId], references: [id])
   studentId String
+
+  @@map("studentNotification")
 }
 
 model Question {
@@ -75,8 +80,9 @@ model Question {
   content   String
   createdAt DateTime
   student   Student  @relation(fields: [studentId], references: [id])
-  studentId String
+  studentId String   @unique
   stuukes   Stuuke[]
+  isDraft   Boolean  @default(true)
 
   @@map("question")
 }
@@ -88,9 +94,10 @@ model Stuuke {
   createdAt  DateTime
   references StuukeReferences[]
   student    Student            @relation(fields: [studentId], references: [id])
-  studentId  String
-  Question   Question           @relation(fields: [questionId], references: [id])
-  questionId String
+  studentId  String             @unique
+  question   Question           @relation(fields: [questionId], references: [id])
+  questionId String             @unique
+  isDraft    Boolean            @default(true)
 
   @@map("stuuke")
 }
@@ -100,7 +107,7 @@ model StuukeReferences {
   title    String
   url      String
   stuuke   Stuuke @relation(fields: [stuukeId], references: [id])
-  stuukeId String
+  stuukeId String @unique
 
   @@map("stuukeReferences")
 }
