@@ -52,6 +52,7 @@ export interface NexusGenObjects {
   }
   Query: {};
   Question: { // root type
+    authorId: string; // String!
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
@@ -60,31 +61,36 @@ export interface NexusGenObjects {
   }
   Reference: { // root type
     id: string; // ID!
+    stuukeId: string; // String!
     title: string; // String!
     url: string; // String!
   }
   Student: { // root type
-    badgesCount?: number | null; // Int
-    bio?: string | null; // String
+    badgesCount: number; // Int!
+    bio: string; // String!
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
-    leaderBoardPosition?: number | null; // Int
+    leaderBoardPosition: number; // Int!
     password: string; // String!
-    questionsCount?: number | null; // Int
-    stuukesCount?: number | null; // Int
+    questionsCount: number; // Int!
+    stuukesCount: number; // Int!
     username: string; // String!
   }
   StudentBadge: { // root type
     badgeId: string; // String!
     earnedAt: NexusGenScalars['DateTime']; // DateTime!
+    studentId: string; // String!
   }
   Stuuke: { // root type
+    authorId: string; // String!
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
+    questionId: string; // String!
+    studentId: string; // String!
     title: string; // String!
   }
 }
@@ -111,6 +117,7 @@ export interface NexusGenFieldTypes {
   }
   Question: { // field return type
     author: NexusGenRootTypes['Student']; // Student!
+    authorId: string; // String!
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
@@ -121,23 +128,24 @@ export interface NexusGenFieldTypes {
   Reference: { // field return type
     id: string; // ID!
     stuuke: NexusGenRootTypes['Stuuke']; // Stuuke!
+    stuukeId: string; // String!
     title: string; // String!
     url: string; // String!
   }
   Student: { // field return type
     badges: Array<NexusGenRootTypes['StudentBadge'] | null> | null; // [StudentBadge]
-    badgesCount: number | null; // Int
-    bio: string | null; // String
+    badgesCount: number; // Int!
+    bio: string; // String!
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
-    leaderBoardPosition: number | null; // Int
+    leaderBoardPosition: number; // Int!
     password: string; // String!
     questions: Array<NexusGenRootTypes['Question'] | null> | null; // [Question]
-    questionsCount: number | null; // Int
+    questionsCount: number; // Int!
     stuukes: Array<NexusGenRootTypes['Stuuke'] | null> | null; // [Stuuke]
-    stuukesCount: number | null; // Int
+    stuukesCount: number; // Int!
     username: string; // String!
   }
   StudentBadge: { // field return type
@@ -145,15 +153,19 @@ export interface NexusGenFieldTypes {
     badgeInfo: NexusGenRootTypes['BadgeInfo'] | null; // BadgeInfo
     earnedAt: NexusGenScalars['DateTime']; // DateTime!
     student: NexusGenRootTypes['Student'] | null; // Student
+    studentId: string; // String!
   }
   Stuuke: { // field return type
-    author: NexusGenRootTypes['Student']; // Student!
+    authorId: string; // String!
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
     question: NexusGenRootTypes['Question']; // Question!
+    questionId: string; // String!
     references: Array<NexusGenRootTypes['Reference'] | null> | null; // [Reference]
+    student: NexusGenRootTypes['Student']; // Student!
+    studentId: string; // String!
     title: string; // String!
   }
 }
@@ -170,6 +182,7 @@ export interface NexusGenFieldTypeNames {
   }
   Question: { // field return type name
     author: 'Student'
+    authorId: 'String'
     content: 'String'
     createdAt: 'DateTime'
     id: 'ID'
@@ -180,6 +193,7 @@ export interface NexusGenFieldTypeNames {
   Reference: { // field return type name
     id: 'ID'
     stuuke: 'Stuuke'
+    stuukeId: 'String'
     title: 'String'
     url: 'String'
   }
@@ -204,15 +218,19 @@ export interface NexusGenFieldTypeNames {
     badgeInfo: 'BadgeInfo'
     earnedAt: 'DateTime'
     student: 'Student'
+    studentId: 'String'
   }
   Stuuke: { // field return type name
-    author: 'Student'
+    authorId: 'String'
     content: 'String'
     createdAt: 'DateTime'
     id: 'ID'
     isDraft: 'Boolean'
     question: 'Question'
+    questionId: 'String'
     references: 'Reference'
+    student: 'Student'
+    studentId: 'String'
     title: 'String'
   }
 }

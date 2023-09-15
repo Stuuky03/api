@@ -12,15 +12,15 @@ const Student = objectType({
     t.nonNull.string('username')
     t.nonNull.string('email')
     t.nonNull.string('password')
-    t.string('bio')
-    t.int('leaderBoardPosition')
-    t.int('badgesCount')
-    t.int('stuukesCount')
-    t.int('questionsCount')
+    t.nonNull.string('bio')
+    t.nonNull.int('leaderBoardPosition')
+    t.nonNull.int('badgesCount')
+    t.nonNull.int('stuukesCount')
+    t.nonNull.int('questionsCount')
     t.list.field('badges', {
       type: 'StudentBadge',
-      resolve: async (parent, _, context) => {
-        return await context.prisma.studentBadges.findMany({
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.studentBadges.findMany({
           where: {
             studentId: parent.id,
           },
@@ -29,16 +29,18 @@ const Student = objectType({
     })
     t.list.field('stuukes', {
       type: 'Stuuke',
-      resolve: async (parent, _, context) => {
-        return await context.prisma.stuuke.findMany({
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.stuuke.findMany({
           where: { studentId: parent.id }
         })
       }
     })
     t.list.field('questions', {
       type: 'Question',
-      resolve: async (parent, _, context) => {
-        return "My Questions"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.question.findMany({
+          where: { studentId: parent.id }
+        })
       }
     })
   },
@@ -47,18 +49,21 @@ const Student = objectType({
 const StudentBadge = objectType({
   name: "StudentBadge",
   definition(t) {
-    t.nonNull.field('earnedAt', { type: 'DateTime' })
+    t.nonNull.date('earnedAt')
     t.nonNull.string('badgeId')
+    t.nonNull.string('studentId')
     t.field('student', {
       type: 'Student',
-      resolve: async (parent, _, context) => {
-        return "Student Winner"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.student.findUnique({
+          where: { id: parent.studentId }
+        })
       }
     })
     t.field('badgeInfo', {
       type: 'BadgeInfo',
-      resolve: async (parent, _, context) => {
-        return await context.prisma.badge.findUnique({
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.badge.findUnique({
           where: { id: parent.badgeId }
         })
       }
@@ -83,23 +88,32 @@ const Stuuke = objectType({
     t.nonNull.string('title')
     t.nonNull.string('content')
     t.nonNull.boolean('isDraft')
-    t.nonNull.field('createdAt', { type: 'DateTime' })
-    t.nonNull.field('author', {
+    t.nonNull.date('createdAt')
+    t.nonNull.string('authorId')
+    t.nonNull.string('studentId')
+    t.nonNull.string('questionId')
+    t.nonNull.field('student', {
       type: 'Student',
-      resolve: async (parent, _, context) => {
-        return "Stuuky Author"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.student.findUnique({
+          where: { id: parent.studentId }
+        })
       }
     })
     t.nonNull.field('question', {
       type: 'Question',
-      resolve: async (parent, _, context) => {
-        return "This Stuuke Question"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.question.findUnique({
+          where: { id: parent.questionId }
+        })
       }
     })
     t.list.field('references', {
       type: 'Reference',
-      resolve: async (parent, _, context) => {
-        return "Stuuke References"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.stuukeReferences.findMany({
+          where: { stuukeId: parent.id }
+        })
       }
     })
   }
@@ -111,17 +125,22 @@ const Question = objectType({
     t.nonNull.string('title')
     t.nonNull.string('content')
     t.nonNull.boolean('isDraft')
-    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.date('createdAt')
+    t.nonNull.string('authorId')
     t.nonNull.field('author', {
       type: 'Student',
-      resolve: async (parent, _, context) => {
-        return "Stuuky Author"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.question.findUnique({
+          where: { id: parent.authorId }
+        })
       }
     })
     t.nonNull.field('stuukes', {
       type: 'Stuuke',
-      resolve: async (parent, _, context) => {
-        return "This Question Stuukes"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.stuuke.findMany({
+          where: { questionId: parent.id }
+        })
       }
     })
   }
@@ -133,10 +152,13 @@ const Reference = objectType({
     t.nonNull.id('id')
     t.nonNull.string('title')
     t.nonNull.string('url')
+    t.nonNull.string('stuukeId')
     t.nonNull.field('stuuke', {
       type: 'Stuuke',
-      resolve: async (parent, _, context) => {
-        return "This Stuuke References"
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.stuuke.findUnique({
+          where: { id: parent.stuukeId }
+        })
       }
     })
   }

@@ -13,7 +13,7 @@
   "dependencies": {
     "@fastify/cors": "^8.3.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "^5.3.0",
+    "@prisma/client": "^5.3.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
     "graphql": "^16.8.0",
@@ -26,7 +26,7 @@
     "@mermaid-js/mermaid-cli": "^10.4.0",
     "@types/node": "^20.5.3",
     "module-alias": "^2.2.3",
-    "prisma": "^5.3.0",
+    "prisma": "^5.3.1",
     "prisma-erd-generator": "^1.11.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"

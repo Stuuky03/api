@@ -19,7 +19,7 @@ model Student {
   username            String                @unique
   email               String                @unique
   password            String
-  bio                 String?
+  bio                 String
   badges              StudentBadges?
   badgesCount         Int                   @default(0)
   points              StudentPoints[]
@@ -27,7 +27,7 @@ model Student {
   stuukes             Stuuke[]
   stuukesCount        Int                   @default(0)
   questions           Question[]
-  qustionsCount       Int
+  qustionsCount       Int                   @default(0)
   notifications       StudentNotification[]
 
   @@map("student")

@@ -20,6 +20,7 @@ type Query {
 
 type Question {
   author: Student!
+  authorId: String!
   content: String!
   createdAt: DateTime!
   id: ID!
@@ -31,24 +32,25 @@ type Question {
 type Reference {
   id: ID!
   stuuke: Stuuke!
+  stuukeId: String!
   title: String!
   url: String!
 }
 
 type Student {
   badges: [StudentBadge]
-  badgesCount: Int
-  bio: String
+  badgesCount: Int!
+  bio: String!
   email: String!
   firstName: String!
   id: ID!
   lastName: String!
-  leaderBoardPosition: Int
+  leaderBoardPosition: Int!
   password: String!
   questions: [Question]
-  questionsCount: Int
+  questionsCount: Int!
   stuukes: [Stuuke]
-  stuukesCount: Int
+  stuukesCount: Int!
   username: String!
 }
 
@@ -57,15 +59,19 @@ type StudentBadge {
   badgeInfo: BadgeInfo
   earnedAt: DateTime!
   student: Student
+  studentId: String!
 }
 
 type Stuuke {
-  author: Student!
+  authorId: String!
   content: String!
   createdAt: DateTime!
   id: ID!
   isDraft: Boolean!
   question: Question!
+  questionId: String!
   references: [Reference]
+  student: Student!
+  studentId: String!
   title: String!
 }
