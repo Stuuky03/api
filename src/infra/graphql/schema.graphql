@@ -2,11 +2,11 @@
 ### Do not make changes to this file directly
 
 
-type Badge {
+type BadgeInfo {
   description: String
   id: ID
   imageUrl: String
-  title: String
+  name: String
 }
 
 """
@@ -36,7 +36,7 @@ type Reference {
 }
 
 type Student {
-  badges: [Badge]
+  badges: [StudentBadge]
   badgesCount: Int
   bio: String
   email: String!
@@ -50,6 +50,13 @@ type Student {
   stuukes: [Stuuke]
   stuukesCount: Int
   username: String!
+}
+
+type StudentBadge {
+  badgeId: String!
+  badgeInfo: BadgeInfo
+  earnedAt: DateTime!
+  student: Student
 }
 
 type Stuuke {
