@@ -25,7 +25,8 @@ type Mutation {
 
 type Query {
   allStudents: [Student]
-  questionFeed(course: String, searchString: String, tags: String): [Question!]!
+  questionById(id: String): Question!
+  questionFeed: [Question!]!
 }
 
 type Question {

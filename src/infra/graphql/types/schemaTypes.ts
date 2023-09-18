@@ -131,6 +131,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
+    questionById: NexusGenRootTypes['Question']; // Question!
     questionFeed: NexusGenRootTypes['Question'][]; // [Question!]!
   }
   Question: { // field return type
@@ -214,6 +215,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     allStudents: 'Student'
+    questionById: 'Question'
     questionFeed: 'Question'
   }
   Question: { // field return type name
@@ -283,10 +285,8 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Query: {
-    questionFeed: { // args
-      course?: string | null; // String
-      searchString?: string | null; // String
-      tags?: string | null; // String
+    questionById: { // args
+      id?: string | null; // String
     }
   }
 }

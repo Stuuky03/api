@@ -29,8 +29,8 @@ const Question = objectType({
     t.nonNull.field('student', {
       type: 'Student',
       resolve: async (parent, _, { prisma }) => {
-        return await prisma.question.findUnique({
-          where: { id: parent.authorId }
+        return await prisma.student.findUnique({
+          where: { id: parent.studentId }
         })
       }
     })

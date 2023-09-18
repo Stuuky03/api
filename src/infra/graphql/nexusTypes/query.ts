@@ -12,46 +12,28 @@ const Query = queryType({
 
     t.nonNull.list.nonNull.field('questionFeed', {
       type: 'Question',
-      args: {
-        searchString: nullable(stringArg()),
-        course: nullable(stringArg()),
-        tags: nullable(stringArg()),
-      },
       resolve: (_parent, args, { prisma }) => {
-        const or = args.searchString
-          ? {
-            OR: [
-              { title: { contains: args.searchString } },
-              { content: { contains: args.searchString } },
-            ],
-          }
-          : {}
-
-        console.log("TIPOOOOO: " + typeof (args.course))
-
         return prisma.question.findMany({
-          // select: {
-          //   courses: {
-          //     where: {
-          //       OR: [
-          //         { name: args.course || undefined }
-          //       ],
-          //     }
-          //   },
-          //   tags: {
-          //     where: {
-          //       OR: [
-          //         { name: args.tags || undefined }
-          //       ]
-          //     }
-          //   }
-          // },
           where: {
             isDraft: false,
-            ...or,
           },
         })
       },
+    })
+
+    t.nonNull.field('questionById', {
+      type: 'Question',
+      args: {
+        id: stringArg()
+      },
+      resolve: async (_parent, args, { prisma }) => {
+        return await prisma.question.findUnique({
+          where: {
+            id: args.id || undefined,
+            isDraft: false
+          }
+        })
+      }
     })
   },
 })
