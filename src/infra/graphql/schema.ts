@@ -1,12 +1,17 @@
 import { DateTimeResolver } from "graphql-scalars";
-import { asNexusMethod, makeSchema } from "nexus";
+import { asNexusMethod, declarativeWrappingPlugin, makeSchema } from "nexus";
 import { join } from "path";
 import * as types from "./nexusTypes"
+import { GraphQLScalarType } from "graphql";
 
-const DateTime = asNexusMethod(DateTimeResolver, 'date')
+const dateTimeScalar = new GraphQLScalarType(DateTimeResolver)
+export const DateTime = asNexusMethod(dateTimeScalar, 'dateTime')
 
 export const schema = makeSchema({
-  types,
+  types: [
+    types,
+    DateTime
+  ],
   outputs: {
     schema: join(__dirname, '../graphql/', 'schema.graphql'),
     typegen: join(__dirname, '../graphql/types/', 'schemaTypes.ts')
@@ -22,5 +27,9 @@ export const schema = makeSchema({
         alias: 'prismaClient',
       },
     ],
+    mapping: {
+      DateTime: 'Date',
+    }
   },
+  plugins: [declarativeWrappingPlugin()]
 })

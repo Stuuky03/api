@@ -9,23 +9,36 @@ type BadgeInfo {
   name: String
 }
 
+type Course {
+  description: String!
+  name: ID!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
 
+type Mutation {
+  question: Question
+}
+
 type Query {
   allStudents: [Student]
+  questionFeed(course: String, searchString: String, tags: String): [Question!]!
 }
 
 type Question {
-  author: Student!
-  authorId: String!
   content: String!
+  course: Course!
+  courseId: String!
   createdAt: DateTime!
   id: ID!
   isDraft: Boolean!
+  student: Student!
+  studentId: String!
   stuukes: Stuuke!
+  tags: Tag!
   title: String!
 }
 
@@ -41,6 +54,7 @@ type Student {
   badges: [StudentBadge]
   badgesCount: Int!
   bio: String!
+  courses: Course!
   email: String!
   firstName: String!
   id: ID!
@@ -63,8 +77,9 @@ type StudentBadge {
 }
 
 type Stuuke {
-  authorId: String!
   content: String!
+  course: Course!
+  courseId: String!
   createdAt: DateTime!
   id: ID!
   isDraft: Boolean!
@@ -73,5 +88,11 @@ type Stuuke {
   references: [Reference]
   student: Student!
   studentId: String!
+  tags: [Tag]
   title: String!
+}
+
+type Tag {
+  description: String!
+  name: String!
 }

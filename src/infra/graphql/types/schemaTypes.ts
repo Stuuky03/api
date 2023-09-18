@@ -11,7 +11,7 @@ declare global {
     /**
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
-    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
   }
 }
 declare global {
@@ -19,7 +19,7 @@ declare global {
     /**
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
-    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
   }
 }
 
@@ -40,7 +40,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  DateTime: any
+  DateTime: Date
 }
 
 export interface NexusGenObjects {
@@ -50,13 +50,19 @@ export interface NexusGenObjects {
     imageUrl?: string | null; // String
     name?: string | null; // String
   }
+  Course: { // root type
+    description: string; // String!
+    name: string; // ID!
+  }
+  Mutation: {};
   Query: {};
   Question: { // root type
-    authorId: string; // String!
     content: string; // String!
+    courseId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
+    studentId: string; // String!
     title: string; // String!
   }
   Reference: { // root type
@@ -84,14 +90,18 @@ export interface NexusGenObjects {
     studentId: string; // String!
   }
   Stuuke: { // root type
-    authorId: string; // String!
     content: string; // String!
+    courseId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
     questionId: string; // String!
     studentId: string; // String!
     title: string; // String!
+  }
+  Tag: { // root type
+    description: string; // String!
+    name: string; // String!
   }
 }
 
@@ -112,17 +122,28 @@ export interface NexusGenFieldTypes {
     imageUrl: string | null; // String
     name: string | null; // String
   }
+  Course: { // field return type
+    description: string; // String!
+    name: string; // ID!
+  }
+  Mutation: { // field return type
+    question: NexusGenRootTypes['Question'] | null; // Question
+  }
   Query: { // field return type
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
+    questionFeed: NexusGenRootTypes['Question'][]; // [Question!]!
   }
   Question: { // field return type
-    author: NexusGenRootTypes['Student']; // Student!
-    authorId: string; // String!
     content: string; // String!
+    course: NexusGenRootTypes['Course']; // Course!
+    courseId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
+    student: NexusGenRootTypes['Student']; // Student!
+    studentId: string; // String!
     stuukes: NexusGenRootTypes['Stuuke']; // Stuuke!
+    tags: NexusGenRootTypes['Tag']; // Tag!
     title: string; // String!
   }
   Reference: { // field return type
@@ -136,6 +157,7 @@ export interface NexusGenFieldTypes {
     badges: Array<NexusGenRootTypes['StudentBadge'] | null> | null; // [StudentBadge]
     badgesCount: number; // Int!
     bio: string; // String!
+    courses: NexusGenRootTypes['Course']; // Course!
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
@@ -156,8 +178,9 @@ export interface NexusGenFieldTypes {
     studentId: string; // String!
   }
   Stuuke: { // field return type
-    authorId: string; // String!
     content: string; // String!
+    course: NexusGenRootTypes['Course']; // Course!
+    courseId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
@@ -166,7 +189,12 @@ export interface NexusGenFieldTypes {
     references: Array<NexusGenRootTypes['Reference'] | null> | null; // [Reference]
     student: NexusGenRootTypes['Student']; // Student!
     studentId: string; // String!
+    tags: Array<NexusGenRootTypes['Tag'] | null> | null; // [Tag]
     title: string; // String!
+  }
+  Tag: { // field return type
+    description: string; // String!
+    name: string; // String!
   }
 }
 
@@ -177,17 +205,28 @@ export interface NexusGenFieldTypeNames {
     imageUrl: 'String'
     name: 'String'
   }
+  Course: { // field return type name
+    description: 'String'
+    name: 'ID'
+  }
+  Mutation: { // field return type name
+    question: 'Question'
+  }
   Query: { // field return type name
     allStudents: 'Student'
+    questionFeed: 'Question'
   }
   Question: { // field return type name
-    author: 'Student'
-    authorId: 'String'
     content: 'String'
+    course: 'Course'
+    courseId: 'String'
     createdAt: 'DateTime'
     id: 'ID'
     isDraft: 'Boolean'
+    student: 'Student'
+    studentId: 'String'
     stuukes: 'Stuuke'
+    tags: 'Tag'
     title: 'String'
   }
   Reference: { // field return type name
@@ -201,6 +240,7 @@ export interface NexusGenFieldTypeNames {
     badges: 'StudentBadge'
     badgesCount: 'Int'
     bio: 'String'
+    courses: 'Course'
     email: 'String'
     firstName: 'String'
     id: 'ID'
@@ -221,8 +261,9 @@ export interface NexusGenFieldTypeNames {
     studentId: 'String'
   }
   Stuuke: { // field return type name
-    authorId: 'String'
     content: 'String'
+    course: 'Course'
+    courseId: 'String'
     createdAt: 'DateTime'
     id: 'ID'
     isDraft: 'Boolean'
@@ -231,11 +272,23 @@ export interface NexusGenFieldTypeNames {
     references: 'Reference'
     student: 'Student'
     studentId: 'String'
+    tags: 'Tag'
     title: 'String'
+  }
+  Tag: { // field return type name
+    description: 'String'
+    name: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Query: {
+    questionFeed: { // args
+      course?: string | null; // String
+      searchString?: string | null; // String
+      tags?: string | null; // String
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -301,11 +354,71 @@ declare global {
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
   interface NexusGenPluginSchemaConfig {
   }
   interface NexusGenPluginArgConfig {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
 }
