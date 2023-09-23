@@ -28,13 +28,13 @@ const Question = objectType({
     })
     t.nonNull.field('student', {
       type: 'Student',
-      resolve: async (parent, _, { prisma }) => {
-        return await prisma.student.findUnique({
+      resolve: (parent, _, { prisma }) => {
+        return prisma.student.findUnique({
           where: { id: parent.studentId }
         })
       }
     })
-    t.nonNull.field('stuukes', {
+    t.list.nonNull.field('stuukes', {
       type: 'Stuuke',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.stuuke.findMany({

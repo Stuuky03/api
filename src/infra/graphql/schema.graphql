@@ -27,6 +27,7 @@ type Query {
   allStudents: [Student]
   questionById(id: String): Question!
   questionFeed: [Question!]!
+  stuukeFeed: [Stuuke!]!
 }
 
 type Question {
@@ -38,7 +39,7 @@ type Question {
   isDraft: Boolean!
   student: Student!
   studentId: String!
-  stuukes: Stuuke!
+  stuukes: [Stuuke!]
   tags: Tag!
   title: String!
 }

@@ -133,6 +133,7 @@ export interface NexusGenFieldTypes {
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
     questionById: NexusGenRootTypes['Question']; // Question!
     questionFeed: NexusGenRootTypes['Question'][]; // [Question!]!
+    stuukeFeed: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
   }
   Question: { // field return type
     content: string; // String!
@@ -143,7 +144,7 @@ export interface NexusGenFieldTypes {
     isDraft: boolean; // Boolean!
     student: NexusGenRootTypes['Student']; // Student!
     studentId: string; // String!
-    stuukes: NexusGenRootTypes['Stuuke']; // Stuuke!
+    stuukes: NexusGenRootTypes['Stuuke'][] | null; // [Stuuke!]
     tags: NexusGenRootTypes['Tag']; // Tag!
     title: string; // String!
   }
@@ -217,6 +218,7 @@ export interface NexusGenFieldTypeNames {
     allStudents: 'Student'
     questionById: 'Question'
     questionFeed: 'Question'
+    stuukeFeed: 'Stuuke'
   }
   Question: { // field return type name
     content: 'String'

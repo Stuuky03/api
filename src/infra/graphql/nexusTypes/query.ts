@@ -21,6 +21,17 @@ const Query = queryType({
       },
     })
 
+    t.nonNull.list.nonNull.field('stuukeFeed', {
+      type: 'Stuuke',
+      resolve: (_parent, args, { prisma }) => {
+        return prisma.stuuke.findMany({
+          where: {
+            isDraft: false,
+          },
+        })
+      },
+    })
+
     t.nonNull.field('questionById', {
       type: 'Question',
       args: {
