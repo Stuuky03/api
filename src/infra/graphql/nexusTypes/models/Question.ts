@@ -18,12 +18,16 @@ const Question = objectType({
         })
       }
     })
-    t.nonNull.field('tags', {
+    t.list.field('tags', {
       type: 'Tag',
       resolve: async (parent, _, { prisma }) => {
-        return await prisma.tagsOnPosts.findMany({
-          where: { stuukeId: parent.id }
+        const tagsOnPosts = await prisma.tagsOnPosts.findMany({
+          where: { questionId: parent.id },
+          select: {
+            tag: true
+          }
         })
+        return tagsOnPosts.map(tagOnPost => tagOnPost.tag);
       }
     })
     t.nonNull.field('student', {

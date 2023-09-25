@@ -131,7 +131,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
-    questionById: NexusGenRootTypes['Question']; // Question!
+    questionById: NexusGenRootTypes['Question'] | null; // Question
     questionFeed: NexusGenRootTypes['Question'][]; // [Question!]!
     stuukeFeed: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
   }
@@ -145,7 +145,7 @@ export interface NexusGenFieldTypes {
     student: NexusGenRootTypes['Student']; // Student!
     studentId: string; // String!
     stuukes: NexusGenRootTypes['Stuuke'][] | null; // [Stuuke!]
-    tags: NexusGenRootTypes['Tag']; // Tag!
+    tags: Array<NexusGenRootTypes['Tag'] | null> | null; // [Tag]
     title: string; // String!
   }
   Reference: { // field return type

@@ -5,15 +5,15 @@ const Query = queryType({
   definition(t) {
     t.list.field('allStudents', {
       type: 'Student',
-      resolve: (_parent, _args, context) => {
-        return context.prisma.student.findMany()
+      resolve: async (_parent, _args, context) => {
+        return await context.prisma.student.findMany()
       }
     })
 
     t.nonNull.list.nonNull.field('questionFeed', {
       type: 'Question',
-      resolve: (_parent, args, { prisma }) => {
-        return prisma.question.findMany({
+      resolve: async (_parent, args, { prisma }) => {
+        return await prisma.question.findMany({
           where: {
             isDraft: false,
           },
@@ -23,8 +23,8 @@ const Query = queryType({
 
     t.nonNull.list.nonNull.field('stuukeFeed', {
       type: 'Stuuke',
-      resolve: (_parent, args, { prisma }) => {
-        return prisma.stuuke.findMany({
+      resolve: async (_parent, args, { prisma }) => {
+        return await prisma.stuuke.findMany({
           where: {
             isDraft: false,
           },
@@ -32,7 +32,7 @@ const Query = queryType({
       },
     })
 
-    t.nonNull.field('questionById', {
+    t.field('questionById', {
       type: 'Question',
       args: {
         id: stringArg()
@@ -40,7 +40,7 @@ const Query = queryType({
       resolve: async (_parent, args, { prisma }) => {
         return await prisma.question.findUnique({
           where: {
-            id: args.id || undefined,
+            id: args.id ?? undefined,
             isDraft: false
           }
         })
