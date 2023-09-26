@@ -3,10 +3,10 @@ import { objectType } from "nexus"
 const BadgeInfo = objectType({
   name: "BadgeInfo",
   definition(t) {
-    t.id('id')
-    t.string('name')
-    t.string('description')
-    t.string('imageUrl')
+    t.nonNull.id('id')
+    t.nonNull.string('name')
+    t.nonNull.string('description')
+    t.nonNull.string('imageUrl')
   }
 })
 

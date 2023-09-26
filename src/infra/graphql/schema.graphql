@@ -3,10 +3,10 @@
 
 
 type BadgeInfo {
-  description: String
-  id: ID
-  imageUrl: String
-  name: String
+  description: String!
+  id: ID!
+  imageUrl: String!
+  name: String!
 }
 
 type Course {
@@ -39,8 +39,8 @@ type Question {
   isDraft: Boolean!
   student: Student!
   studentId: String!
-  stuukes: [Stuuke!]
-  tags: [Tag]
+  stuukes: [Stuuke!]!
+  tags: [Tag!]!
   title: String!
 }
 
@@ -53,7 +53,7 @@ type Reference {
 }
 
 type Student {
-  badges: [StudentBadge]
+  badges: [StudentBadge!]!
   badgesCount: Int!
   bio: String!
   courses: Course!
@@ -63,9 +63,9 @@ type Student {
   lastName: String!
   leaderBoardPosition: Int!
   password: String!
-  questions: [Question]
+  questions: [Question!]!
   questionsCount: Int!
-  stuukes: [Stuuke]
+  stuukes: [Stuuke!]!
   stuukesCount: Int!
   username: String!
 }
@@ -87,10 +87,10 @@ type Stuuke {
   isDraft: Boolean!
   question: Question!
   questionId: String!
-  references: [Reference]
+  references: [Reference!]!
   student: Student!
   studentId: String!
-  tags: [Tag]
+  tags: [Tag!]!
   title: String!
 }
 

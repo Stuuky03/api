@@ -19,7 +19,7 @@ const Stuuke = objectType({
         })
       }
     })
-    t.list.field('tags', {
+    t.nonNull.list.nonNull.field('tags', {
       type: 'Tag',
       nullable: true,
       resolve: async (parent, _, { prisma }) => {
@@ -48,7 +48,7 @@ const Stuuke = objectType({
         })
       }
     })
-    t.list.field('references', {
+    t.nonNull.list.nonNull.field('references', {
       type: 'Reference',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.stuukeReferences.findMany({

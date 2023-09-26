@@ -18,7 +18,7 @@ const Question = objectType({
         })
       }
     })
-    t.list.field('tags', {
+    t.nonNull.list.nonNull.field('tags', {
       type: 'Tag',
       resolve: async (parent, _, { prisma }) => {
         const tagsOnPosts = await prisma.tagsOnPosts.findMany({
@@ -38,7 +38,7 @@ const Question = objectType({
         })
       }
     })
-    t.list.nonNull.field('stuukes', {
+    t.nonNull.list.nonNull.field('stuukes', {
       type: 'Stuuke',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.stuuke.findMany({

@@ -24,7 +24,7 @@ const Student = objectType({
         })
       }
     })
-    t.list.field('badges', {
+    t.nonNull.list.nonNull.field('badges', {
       type: 'StudentBadge',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.studentBadges.findMany({
@@ -34,7 +34,7 @@ const Student = objectType({
         });
       }
     })
-    t.list.field('stuukes', {
+    t.nonNull.list.nonNull.field('stuukes', {
       type: 'Stuuke',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.stuuke.findMany({
@@ -42,7 +42,7 @@ const Student = objectType({
         })
       }
     })
-    t.list.field('questions', {
+    t.nonNull.list.nonNull.field('questions', {
       type: 'Question',
       resolve: async (parent, _, { prisma }) => {
         return await prisma.question.findMany({

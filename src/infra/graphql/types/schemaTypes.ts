@@ -45,10 +45,10 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   BadgeInfo: { // root type
-    description?: string | null; // String
-    id?: string | null; // ID
-    imageUrl?: string | null; // String
-    name?: string | null; // String
+    description: string; // String!
+    id: string; // ID!
+    imageUrl: string; // String!
+    name: string; // String!
   }
   Course: { // root type
     description: string; // String!
@@ -117,10 +117,10 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   BadgeInfo: { // field return type
-    description: string | null; // String
-    id: string | null; // ID
-    imageUrl: string | null; // String
-    name: string | null; // String
+    description: string; // String!
+    id: string; // ID!
+    imageUrl: string; // String!
+    name: string; // String!
   }
   Course: { // field return type
     description: string; // String!
@@ -144,8 +144,8 @@ export interface NexusGenFieldTypes {
     isDraft: boolean; // Boolean!
     student: NexusGenRootTypes['Student']; // Student!
     studentId: string; // String!
-    stuukes: NexusGenRootTypes['Stuuke'][] | null; // [Stuuke!]
-    tags: Array<NexusGenRootTypes['Tag'] | null> | null; // [Tag]
+    stuukes: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
   }
   Reference: { // field return type
@@ -156,7 +156,7 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Student: { // field return type
-    badges: Array<NexusGenRootTypes['StudentBadge'] | null> | null; // [StudentBadge]
+    badges: NexusGenRootTypes['StudentBadge'][]; // [StudentBadge!]!
     badgesCount: number; // Int!
     bio: string; // String!
     courses: NexusGenRootTypes['Course']; // Course!
@@ -166,9 +166,9 @@ export interface NexusGenFieldTypes {
     lastName: string; // String!
     leaderBoardPosition: number; // Int!
     password: string; // String!
-    questions: Array<NexusGenRootTypes['Question'] | null> | null; // [Question]
+    questions: NexusGenRootTypes['Question'][]; // [Question!]!
     questionsCount: number; // Int!
-    stuukes: Array<NexusGenRootTypes['Stuuke'] | null> | null; // [Stuuke]
+    stuukes: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
     stuukesCount: number; // Int!
     username: string; // String!
   }
@@ -188,10 +188,10 @@ export interface NexusGenFieldTypes {
     isDraft: boolean; // Boolean!
     question: NexusGenRootTypes['Question']; // Question!
     questionId: string; // String!
-    references: Array<NexusGenRootTypes['Reference'] | null> | null; // [Reference]
+    references: NexusGenRootTypes['Reference'][]; // [Reference!]!
     student: NexusGenRootTypes['Student']; // Student!
     studentId: string; // String!
-    tags: Array<NexusGenRootTypes['Tag'] | null> | null; // [Tag]
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
   }
   Tag: { // field return type
