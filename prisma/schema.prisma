@@ -2,28 +2,158 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model student {
-  id String @id
-  firstName String
-  lastName String
-  username String @unique
-  email String @unique
-  password String
-  profileImgUrl String @unique
+model Student {
+  id                  String                @id
+  firstName           String
+  lastName            String
+  username            String                @unique
+  email               String                @unique
+  password            String
+  bio                 String
+  badges              StudentBadges?
+  badgesCount         Int                   @default(0)
+  points              StudentPoints[]
+  leaderBoardPosition Int
+  stuukes             Stuuke[]
+  stuukesCount        Int                   @default(0)
+  questions           Question[]
+  questionsCount      Int                   @default(0)
+  notifications       StudentNotification[]
+  StudentCourses      StudentCourse[]
+
+  @@map("student")
+}
+
+model StudentPoints {
+  points    Int     @default(0)
+  semester  Int
+  year      Int
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String  @id
+
+  @@index([semester, year, studentId], name: "points_semester_year_idx")
+  @@map("studentPoints")
+}
+
+model StudentBadges {
+  earnedAt  DateTime
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId String   @id
+  badge     Badge?   @relation(fields: [badgeId], references: [id])
+  badgeId   String?
+
+  @@map("studentBadges")
+}
+
+model Badge {
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  imageUrl      String
+  studentBadges StudentBadges[]
+
+  @@map("badge")
+}
+
+model StudentNotification {
+  id        String  @id @default(uuid())
+  title     String
+  message   String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+
+  @@map("studentNotification")
+}
+
+model Question {
+  id        String        @id
+  title     String
+  content   String
+  createdAt DateTime
+  student   Student       @relation(fields: [studentId], references: [id])
+  studentId String
+  stuukes   Stuuke[]
+  isDraft   Boolean       @default(true)
+  tags      TagsOnPosts[]
+  course    Course        @relation(fields: [courseId], references: [name])
+  courseId  String
+
+  @@map("question")
+}
+
+model StudentCourse {
+  course    Course  @relation(fields: [courseId], references: [name])
+  courseId  String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+
+  @@id([studentId, courseId])
+}
+
+model Course {
+  name        String          @id
   description String
-  stuukies Stuuke[]
-  }
+  question    Question[]
+  student     StudentCourse[]
+  stuuke      Stuuke[]
+
+  @@map("course")
+}
+
+model Tag {
+  name        String        @id
+  description String
+  question    TagsOnPosts[]
+
+  @@map("tag")
+}
+
+model TagsOnPosts {
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  stuuke     Stuuke?  @relation(fields: [stuukeId], references: [id])
+  stuukeId   String?
+  tag        Tag      @relation(fields: [tagId], references: [name])
+  tagId      String
+
+  @@id([questionId, tagId])
+  @@map("tagsOnPosts")
+}
 
 model Stuuke {
-  id String @id
-  title String
-  content String
-  createdAt DateTime
-  student student @relation(fields: [studentId], references: [id])
-  studentId String
+  id         String             @id
+  title      String
+  content    String
+  createdAt  DateTime
+  references StuukeReferences[]
+  student    Student            @relation(fields: [studentId], references: [id])
+  studentId  String
+  question   Question           @relation(fields: [questionId], references: [id])
+  questionId String
+  isDraft    Boolean            @default(true)
+  tags       TagsOnPosts[]
+  course     Course             @relation(fields: [courseId], references: [name])
+  courseId   String
+
+  @@map("stuuke")
+}
+
+model StuukeReferences {
+  id       String @id
+  title    String
+  url      String
+  stuuke   Stuuke @relation(fields: [stuukeId], references: [id])
+  stuukeId String
+
+  @@map("stuukeReferences")
 }
