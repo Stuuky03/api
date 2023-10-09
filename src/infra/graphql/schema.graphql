@@ -2,16 +2,9 @@
 ### Do not make changes to this file directly
 
 
-type BadgeInfo {
-  description: String!
-  id: ID!
-  imageUrl: String!
-  name: String!
-}
-
 type Course {
   description: String!
-  name: ID!
+  title: ID!
 }
 
 """
@@ -20,7 +13,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Mutation {
-  question: Question
+  signupStudent(data: UserCreateInput!): Student
 }
 
 type Query {
@@ -53,39 +46,28 @@ type Reference {
 }
 
 type Student {
-  badges: [StudentBadge!]!
-  badgesCount: Int!
-  bio: String!
-  courses: Course!
+  bio: String
+  courses: [Course]!
   email: String!
   firstName: String!
   id: ID!
   lastName: String!
-  leaderBoardPosition: Int!
   password: String!
-  questions: [Question!]!
+  questions: [Question]!
   questionsCount: Int!
-  stuukes: [Stuuke!]!
+  stuukes: [Stuuke]!
   stuukesCount: Int!
   username: String!
 }
 
-type StudentBadge {
-  badgeId: String!
-  badgeInfo: BadgeInfo
-  earnedAt: DateTime!
-  student: Student
-  studentId: String!
-}
-
 type Stuuke {
   content: String!
-  course: Course!
+  course: Course
   courseId: String!
   createdAt: DateTime!
   id: ID!
   isDraft: Boolean!
-  question: Question!
+  question: Question
   questionId: String!
   references: [Reference!]!
   student: Student!
@@ -96,5 +78,14 @@ type Stuuke {
 
 type Tag {
   description: String!
-  name: String!
+  id: ID!
+  title: String!
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String!
 }

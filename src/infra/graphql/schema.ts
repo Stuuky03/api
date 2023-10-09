@@ -1,7 +1,7 @@
 import { DateTimeResolver } from "graphql-scalars";
 import { asNexusMethod, declarativeWrappingPlugin, makeSchema } from "nexus";
 import { join } from "path";
-import * as types from "./nexusTypes"
+import * as types from "./resolvers"
 import { GraphQLScalarType } from "graphql";
 
 const dateTimeScalar = new GraphQLScalarType(DateTimeResolver)

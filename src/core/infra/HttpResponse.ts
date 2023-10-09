@@ -1,19 +1,19 @@
-export type HttpResponse = {
+export type HttpResponse<T = any> = {
   statusCode: number
-  body: any
+  data: T
 }
 
 export function created(): HttpResponse {
   return {
     statusCode: 201,
-    body: undefined,
+    data: undefined,
   }
 }
 
 export function clientError(error: Error): HttpResponse {
   return {
     statusCode: 400,
-    body: {
+    data: {
       error: error.message,
     },
   }

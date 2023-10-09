@@ -29,6 +29,13 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  UserCreateInput: { // input type
+    email: string; // String!
+    firstName: string; // String!
+    lastName: string; // String!
+    password: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -44,15 +51,9 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  BadgeInfo: { // root type
-    description: string; // String!
-    id: string; // ID!
-    imageUrl: string; // String!
-    name: string; // String!
-  }
   Course: { // root type
     description: string; // String!
-    name: string; // ID!
+    title: string; // ID!
   }
   Mutation: {};
   Query: {};
@@ -72,22 +73,15 @@ export interface NexusGenObjects {
     url: string; // String!
   }
   Student: { // root type
-    badgesCount: number; // Int!
-    bio: string; // String!
+    bio?: string | null; // String
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
-    leaderBoardPosition: number; // Int!
     password: string; // String!
     questionsCount: number; // Int!
     stuukesCount: number; // Int!
     username: string; // String!
-  }
-  StudentBadge: { // root type
-    badgeId: string; // String!
-    earnedAt: NexusGenScalars['DateTime']; // DateTime!
-    studentId: string; // String!
   }
   Stuuke: { // root type
     content: string; // String!
@@ -101,7 +95,8 @@ export interface NexusGenObjects {
   }
   Tag: { // root type
     description: string; // String!
-    name: string; // String!
+    id: string; // ID!
+    title: string; // String!
   }
 }
 
@@ -116,18 +111,12 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  BadgeInfo: { // field return type
-    description: string; // String!
-    id: string; // ID!
-    imageUrl: string; // String!
-    name: string; // String!
-  }
   Course: { // field return type
     description: string; // String!
-    name: string; // ID!
+    title: string; // ID!
   }
   Mutation: { // field return type
-    question: NexusGenRootTypes['Question'] | null; // Question
+    signupStudent: NexusGenRootTypes['Student'] | null; // Student
   }
   Query: { // field return type
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
@@ -156,37 +145,27 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Student: { // field return type
-    badges: NexusGenRootTypes['StudentBadge'][]; // [StudentBadge!]!
-    badgesCount: number; // Int!
-    bio: string; // String!
-    courses: NexusGenRootTypes['Course']; // Course!
+    bio: string | null; // String
+    courses: Array<NexusGenRootTypes['Course'] | null>; // [Course]!
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
-    leaderBoardPosition: number; // Int!
     password: string; // String!
-    questions: NexusGenRootTypes['Question'][]; // [Question!]!
+    questions: Array<NexusGenRootTypes['Question'] | null>; // [Question]!
     questionsCount: number; // Int!
-    stuukes: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
+    stuukes: Array<NexusGenRootTypes['Stuuke'] | null>; // [Stuuke]!
     stuukesCount: number; // Int!
     username: string; // String!
   }
-  StudentBadge: { // field return type
-    badgeId: string; // String!
-    badgeInfo: NexusGenRootTypes['BadgeInfo'] | null; // BadgeInfo
-    earnedAt: NexusGenScalars['DateTime']; // DateTime!
-    student: NexusGenRootTypes['Student'] | null; // Student
-    studentId: string; // String!
-  }
   Stuuke: { // field return type
     content: string; // String!
-    course: NexusGenRootTypes['Course']; // Course!
+    course: NexusGenRootTypes['Course'] | null; // Course
     courseId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     isDraft: boolean; // Boolean!
-    question: NexusGenRootTypes['Question']; // Question!
+    question: NexusGenRootTypes['Question'] | null; // Question
     questionId: string; // String!
     references: NexusGenRootTypes['Reference'][]; // [Reference!]!
     student: NexusGenRootTypes['Student']; // Student!
@@ -196,23 +175,18 @@ export interface NexusGenFieldTypes {
   }
   Tag: { // field return type
     description: string; // String!
-    name: string; // String!
+    id: string; // ID!
+    title: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  BadgeInfo: { // field return type name
-    description: 'String'
-    id: 'ID'
-    imageUrl: 'String'
-    name: 'String'
-  }
   Course: { // field return type name
     description: 'String'
-    name: 'ID'
+    title: 'ID'
   }
   Mutation: { // field return type name
-    question: 'Question'
+    signupStudent: 'Student'
   }
   Query: { // field return type name
     allStudents: 'Student'
@@ -241,28 +215,18 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Student: { // field return type name
-    badges: 'StudentBadge'
-    badgesCount: 'Int'
     bio: 'String'
     courses: 'Course'
     email: 'String'
     firstName: 'String'
     id: 'ID'
     lastName: 'String'
-    leaderBoardPosition: 'Int'
     password: 'String'
     questions: 'Question'
     questionsCount: 'Int'
     stuukes: 'Stuuke'
     stuukesCount: 'Int'
     username: 'String'
-  }
-  StudentBadge: { // field return type name
-    badgeId: 'String'
-    badgeInfo: 'BadgeInfo'
-    earnedAt: 'DateTime'
-    student: 'Student'
-    studentId: 'String'
   }
   Stuuke: { // field return type name
     content: 'String'
@@ -281,11 +245,17 @@ export interface NexusGenFieldTypeNames {
   }
   Tag: { // field return type name
     description: 'String'
-    name: 'String'
+    id: 'ID'
+    title: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    signupStudent: { // args
+      data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
+    }
+  }
   Query: {
     questionById: { // args
       id?: string | null; // String
@@ -301,7 +271,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

@@ -1,21 +1,90 @@
-import { createId } from "@paralleldrive/cuid2";
+import { Password } from "./Password";
+import { Course } from "@/modules/course/domain/Course";
+import { Question } from "@/modules/posts/question/domain/Question";
+import { Stuuke } from "@/modules/posts/stuuke/domain/Stuuke";
+import { Entity } from "@/core/domain/Entity";
+import { StudentCourses } from "./StudentCourses";
 
-export class Student {
-  private readonly _id: string;
-  public username: string;
-  public email: string;
-  public password: string;
+interface IStudentProps {
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: Password;
+  bio?: string;
+  points?: number;
+  stuukes?: Stuuke[]
+  stuukesCount?: number;
+  questions?: Question[]
+  questionsCount?: number;
+  courses?: StudentCourses;
+}
 
-  get id(): string {
-    return this._id;
+export class Student extends Entity<IStudentProps> {
+  get username() {
+    return this.props.username;
   }
 
-  constructor(props: Omit<Student, 'id'>) {
-    const { username, email, password } = props;
-    this.username = username;
-    this.email = email;
-    this.password = password;
+  get firstName() {
+    return this.props.firstName;
+  }
 
-    this._id = createId();
+  get lastName() {
+    return this.props.lastName;
+  }
+
+  get email() {
+    return this.props.email;
+  }
+
+  get password() {
+    return this.props.password;
+  }
+
+  get bio() {
+    return this.props.bio;
+  }
+
+  get points() {
+    return this.props.points;
+  }
+
+  get stuukes() {
+    return this.props.stuukes;
+  }
+
+  get stuukesCount() {
+    return this.props.stuukesCount;
+  }
+
+  get questions() {
+    return this.props.questions;
+  }
+
+  get questionsCount() {
+    return this.props.questionsCount;
+  }
+
+  get courses() {
+    return this.props.courses;
+  }
+
+  private constructor(props: IStudentProps, id?: string) {
+    super(props, id)
+  }
+
+  static create(props: IStudentProps, id?: string): Student {
+    const student = new Student({
+      ...props,
+      stuukes: props.stuukes ?? undefined,
+      stuukesCount: props.stuukesCount ?? 0,
+      questions: props.questions ?? undefined,
+      questionsCount: props.questionsCount ?? 0,
+      bio: props.bio ?? undefined,
+      points: props.points ?? 0,
+      courses: props.courses ?? undefined
+    }, id)
+
+    return student
   }
 }

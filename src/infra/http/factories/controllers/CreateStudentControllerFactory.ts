@@ -1,15 +1,14 @@
 import { Controller } from "@/core/infra/Controller";
+import { PrismaStudentCoursesRepository } from "@/modules/accounts/repositories/prisma/PrismaStudentCoursesRepository";
 import { PrismaStudentRepository } from "@/modules/accounts/repositories/prisma/PrismaStudentRepository";
-import { CreateStudent } from "@/modules/accounts/useCases/createUser/createStudent";
-import { CreateStudentController } from "@/modules/accounts/useCases/createUser/createStudentController";
+import { RegisterStudent } from "@/modules/accounts/useCases/RegisterStudent/RegisterStudent";
+import { RegisterStudentController } from "@/modules/accounts/useCases/RegisterStudent/RegisterStudentController";
 
 
 export function makeCreateStudentController(): Controller {
-  const prismaStudentRepository = new PrismaStudentRepository();
-
-  const createStudent = new CreateStudent(prismaStudentRepository);
-
-  const createStudentController = new CreateStudentController(createStudent);
-
-  return createStudentController;
+  const studentCourseRepository = new PrismaStudentCoursesRepository()
+  const prismaStudentRepository = new PrismaStudentRepository(studentCourseRepository);
+  const registerStudent = new RegisterStudent(prismaStudentRepository);
+  const registerStudentController = new RegisterStudentController(registerStudent);
+  return registerStudentController;
 }
