@@ -41,27 +41,30 @@ export class PrismaStudentRepository implements IStudentRepository {
     return data
   }
 
-  async save(Student: Student): Promise<void> {
+  async save(student: Student): Promise<void> {
 
   }
 
   async create(student: Student): Promise<void> {
     const data = StudentMapper.toPersistence(student)
 
-    await prisma.student.create({
-      data: {
-        id: data.id,
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-        bio: data.bio,
-        points: data.points,
-        stuukesCount: data.stuukesCount,
-        questionsCount: data.questionsCount,
-      }
-    })
+    try {
+      await prisma.student.create({
+        data: {
+          id: data.id,
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          password: data.password,
+          points: data.points,
+          stuukesCount: data.stuukesCount,
+          questionsCount: data.questionsCount,
+        }
+      })
+    } catch (err) {
+      console.log("ERRORRR: " + err)
+    }
 
     if (student.courses) {
       await this.studentCoursesRepository.create(student.courses)

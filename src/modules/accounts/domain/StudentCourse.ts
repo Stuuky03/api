@@ -18,7 +18,7 @@ export class StudentCourse extends Entity<IStudentCourseProps> {
     super(props, id)
   }
 
-  static create(props: IStudentCourseProps, id: string): StudentCourse {
+  static create(props: IStudentCourseProps, id?: string): StudentCourse {
     const studentCourse = new StudentCourse(props, id)
 
     return studentCourse

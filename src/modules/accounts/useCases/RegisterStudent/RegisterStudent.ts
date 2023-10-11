@@ -1,5 +1,6 @@
 import { Password } from "../../domain/Password";
 import { Student } from "../../domain/Student";
+import { StudentMapper } from "../../mappers/StudentMapper";
 import { IStudentRepository } from "../../repositories/IStudentRepository";
 import { IRegisterStudentRequestDTO } from "./RegisterStudentDTO";
 
@@ -31,5 +32,9 @@ export class RegisterStudent {
     })
 
     await this.studentRepository.create(student);
+
+    const studentPersistence = StudentMapper.toPersistence(student)
+
+    return studentPersistence
   }
 }

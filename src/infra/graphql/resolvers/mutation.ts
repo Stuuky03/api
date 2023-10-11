@@ -1,9 +1,6 @@
-import { adaptResolver } from "@/core/infra/adapters/NexusResolver";
+import { makeCreateQuestionController } from "@/infra/http/factories/controllers/CreateQuestionControllerFactory";
 import { makeCreateStudentController } from "@/infra/http/factories/controllers/CreateStudentControllerFactory";
-import { Password } from "@/modules/accounts/domain/Password";
-import { Student } from "@/modules/accounts/domain/Student";
-import { StudentMapper } from "@/modules/accounts/mappers/StudentMapper";
-import { Student as StudentRaw } from "@prisma/client";
+import { Student as StudentRaw, Question as QuestionRaw } from "@prisma/client";
 import { arg, inputObjectType, mutationType, nonNull } from "nexus";
 
 const Mutation = mutationType({
@@ -17,38 +14,28 @@ const Mutation = mutationType({
           })
         )
       },
-      resolve: async (_parent, args, { prisma }): Promise<StudentRaw> => {
-        const password = new Password(args.data.password)
+      resolve: async (_parent, { data }, { prisma }): Promise<StudentRaw> => {
+        const student = await (await makeCreateStudentController().handle(data)).data
 
-        const student = Student.create({
-          username: args.data.username,
-          firstName: args.data.firstName,
-          lastName: args.data.lastName,
-          email: args.data.email,
-          password: password
-        })
-
-        const dataS = StudentMapper.toPersistence(student)
-
-        const studentt = await prisma.student.create({
-          data: {
-            id: dataS.id,
-            username: dataS.username,
-            firstName: dataS.firstName,
-            lastName: dataS.lastName,
-            email: dataS.email,
-            password: dataS.password,
-            bio: dataS.bio,
-            points: dataS.points,
-            stuukesCount: dataS.stuukesCount,
-            questionsCount: dataS.questionsCount,
-          }
-        })
-
-        return studentt
+        return student
       }
     })
 
+    t.field('createQuestion', {
+      type: 'Question',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'CreateQuestionInput'
+          })
+        )
+      },
+      resolve: async (_parent, { data }, { prisma }): Promise<QuestionRaw> => {
+        const question = await (await makeCreateQuestionController().handle(data)).data
+
+        return question
+      }
+    })
 
   }
 })
@@ -64,4 +51,17 @@ export const UserCreateInput = inputObjectType({
   }
 })
 
-export default { Mutation, UserCreateInput }
+export const CreateQuestionInput = inputObjectType({
+  name: 'CreateQuestionInput',
+  definition(t) {
+    t.nonNull.string('title')
+    t.nonNull.string('content')
+    t.nonNull.boolean('isDraft')
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.string('studentId')
+    t.nonNull.string('courseId')
+    t.nonNull.list.nonNull.string('tags');
+  }
+})
+
+export default { Mutation, UserCreateInput, CreateQuestionInput }

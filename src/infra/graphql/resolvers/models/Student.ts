@@ -10,7 +10,6 @@ const Student = objectType({
     t.nonNull.string('username')
     t.nonNull.string('email')
     t.nonNull.string('password')
-    t.string('bio')
     t.nonNull.int('stuukesCount')
     t.nonNull.int('questionsCount')
     t.nonNull.list.field('courses', {

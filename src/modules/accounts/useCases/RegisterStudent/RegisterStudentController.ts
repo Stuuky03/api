@@ -1,6 +1,8 @@
 import { RegisterStudent } from "./RegisterStudent"
 import { Controller } from '@/core/infra/Controller';
-import { HttpResponse, clientError, created } from '@/core/infra/HttpResponse';
+import { GraphqlResponse, modelData } from "@/core/infra/GraphqlResponse";
+import { created, clientError } from "@/core/infra/HttpResponse";
+import { StudentModel } from "../../models/StudentModel";
 
 type RegisterStudentControllerRequest = {
   username: string,
@@ -15,9 +17,9 @@ export class RegisterStudentController implements Controller {
     private RegisterStudent: RegisterStudent
   ) { }
 
-  async handle({ username, firstName, lastName, email, password }: RegisterStudentControllerRequest): Promise<HttpResponse> {
+  async handle({ username, firstName, lastName, email, password }: RegisterStudentControllerRequest): Promise<GraphqlResponse<StudentModel>> {
     try {
-      await this.RegisterStudent.execute({
+      const student = await this.RegisterStudent.execute({
         username,
         firstName,
         lastName,
@@ -25,7 +27,7 @@ export class RegisterStudentController implements Controller {
         password,
       });
 
-      return created();
+      return modelData(student)
     } catch (err: any) {
       return clientError(err);
     }

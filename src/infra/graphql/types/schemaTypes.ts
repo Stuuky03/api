@@ -29,6 +29,15 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateQuestionInput: { // input type
+    content: string; // String!
+    courseId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    isDraft: boolean; // Boolean!
+    studentId: string; // String!
+    tags: string[]; // [String!]!
+    title: string; // String!
+  }
   UserCreateInput: { // input type
     email: string; // String!
     firstName: string; // String!
@@ -73,7 +82,6 @@ export interface NexusGenObjects {
     url: string; // String!
   }
   Student: { // root type
-    bio?: string | null; // String
     email: string; // String!
     firstName: string; // String!
     id: string; // ID!
@@ -116,6 +124,7 @@ export interface NexusGenFieldTypes {
     title: string; // ID!
   }
   Mutation: { // field return type
+    createQuestion: NexusGenRootTypes['Question'] | null; // Question
     signupStudent: NexusGenRootTypes['Student'] | null; // Student
   }
   Query: { // field return type
@@ -145,7 +154,6 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Student: { // field return type
-    bio: string | null; // String
     courses: Array<NexusGenRootTypes['Course'] | null>; // [Course]!
     email: string; // String!
     firstName: string; // String!
@@ -186,6 +194,7 @@ export interface NexusGenFieldTypeNames {
     title: 'ID'
   }
   Mutation: { // field return type name
+    createQuestion: 'Question'
     signupStudent: 'Student'
   }
   Query: { // field return type name
@@ -215,7 +224,6 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Student: { // field return type name
-    bio: 'String'
     courses: 'Course'
     email: 'String'
     firstName: 'String'
@@ -252,6 +260,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createQuestion: { // args
+      data: NexusGenInputs['CreateQuestionInput']; // CreateQuestionInput!
+    }
     signupStudent: { // args
       data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
     }
