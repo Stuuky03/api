@@ -1,5 +1,4 @@
-import { Console } from "console"
-import { nullable, queryType, stringArg } from "nexus"
+import { queryType, stringArg } from "nexus"
 
 const Query = queryType({
   definition(t) {
