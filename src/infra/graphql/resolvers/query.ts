@@ -9,6 +9,56 @@ const Query = queryType({
       }
     })
 
+    t.list.field('allCourses', {
+      type: 'Course',
+      args: {
+        searchString: stringArg()
+      },
+      resolve: async (_parent, args, { prisma }) => {
+        const or = args.searchString ?
+          {
+            OR: [
+              {
+                title: {
+                  contains: args.searchString
+                }
+              }
+            ]
+          } : {}
+
+        return prisma.course.findMany({
+          where: {
+            ...or,
+          },
+        })
+      }
+    })
+
+    t.nonNull.list.field('tagsList', {
+      type: 'Tag',
+      args: {
+        searchString: stringArg()
+      },
+      resolve: async (_parent, args, { prisma }) => {
+        const or = args.searchString ?
+          {
+            OR: [
+              {
+                title: {
+                  contains: args.searchString
+                }
+              }
+            ]
+          } : {}
+
+        return prisma.tag.findMany({
+          where: {
+            ...or,
+          },
+        })
+      }
+    })
+
     t.nonNull.list.nonNull.field('questionFeed', {
       type: 'Question',
       resolve: async (_parent, args, { prisma }) => {

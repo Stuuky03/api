@@ -4,7 +4,8 @@
 
 type Course {
   description: String!
-  title: ID!
+  id: ID!
+  title: String!
 }
 
 input CreateQuestionInput {
@@ -28,10 +29,12 @@ type Mutation {
 }
 
 type Query {
+  allCourses(searchString: String): [Course]
   allStudents: [Student]
   questionById(id: String): Question
   questionFeed: [Question!]!
   stuukeFeed: [Stuuke!]!
+  tagsList(searchString: String): [Tag]!
 }
 
 type Question {

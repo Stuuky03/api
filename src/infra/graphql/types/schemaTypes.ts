@@ -62,7 +62,8 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Course: { // root type
     description: string; // String!
-    title: string; // ID!
+    id: string; // ID!
+    title: string; // String!
   }
   Mutation: {};
   Query: {};
@@ -121,17 +122,20 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Course: { // field return type
     description: string; // String!
-    title: string; // ID!
+    id: string; // ID!
+    title: string; // String!
   }
   Mutation: { // field return type
     createQuestion: NexusGenRootTypes['Question'] | null; // Question
     signupStudent: NexusGenRootTypes['Student'] | null; // Student
   }
   Query: { // field return type
+    allCourses: Array<NexusGenRootTypes['Course'] | null> | null; // [Course]
     allStudents: Array<NexusGenRootTypes['Student'] | null> | null; // [Student]
     questionById: NexusGenRootTypes['Question'] | null; // Question
     questionFeed: NexusGenRootTypes['Question'][]; // [Question!]!
     stuukeFeed: NexusGenRootTypes['Stuuke'][]; // [Stuuke!]!
+    tagsList: Array<NexusGenRootTypes['Tag'] | null>; // [Tag]!
   }
   Question: { // field return type
     content: string; // String!
@@ -191,17 +195,20 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Course: { // field return type name
     description: 'String'
-    title: 'ID'
+    id: 'ID'
+    title: 'String'
   }
   Mutation: { // field return type name
     createQuestion: 'Question'
     signupStudent: 'Student'
   }
   Query: { // field return type name
+    allCourses: 'Course'
     allStudents: 'Student'
     questionById: 'Question'
     questionFeed: 'Question'
     stuukeFeed: 'Stuuke'
+    tagsList: 'Tag'
   }
   Question: { // field return type name
     content: 'String'
@@ -268,8 +275,14 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    allCourses: { // args
+      searchString?: string | null; // String
+    }
     questionById: { // args
       id?: string | null; // String
+    }
+    tagsList: { // args
+      searchString?: string | null; // String
     }
   }
 }
