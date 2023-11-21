@@ -2,6 +2,7 @@ import { makeCreateQuestionController } from "@/infra/http/factories/controllers
 import { makeCreateStudentController } from "@/infra/http/factories/controllers/CreateStudentControllerFactory";
 import { Student as StudentRaw, Question as QuestionRaw } from "@prisma/client";
 import { arg, inputObjectType, mutationType, nonNull } from "nexus";
+import bcrypt from "bcrypt"
 
 const Mutation = mutationType({
   definition(t) {
@@ -10,7 +11,7 @@ const Mutation = mutationType({
       args: {
         data: nonNull(
           arg({
-            type: 'UserCreateInput'
+            type: 'CreateStudentInput'
           })
         )
       },
@@ -37,11 +38,68 @@ const Mutation = mutationType({
       }
     })
 
+    t.field('signinStudent', {
+      type: 'Student',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'SignInStudentInput'
+          })
+        )
+      },
+      resolve: async (_parent, { data }, { prisma }): Promise<StudentRaw | null | undefined> => {
+        const passwordHash = await prisma.student.findFirst({
+          where: {
+            OR: [
+              {
+                email: data.emailOrUsername
+              },
+              {
+                username: data.emailOrUsername
+              }
+            ]
+          },
+          select: {
+            password: true
+          }
+        })
+
+        if (passwordHash?.password === null || passwordHash?.password === undefined) return null
+        const match = await bcrypt.compare(data.password, passwordHash.password)
+
+        if (match) {
+          const student = await prisma.student.findFirst({
+            where: {
+              OR: [
+                {
+                  email: data.emailOrUsername
+                },
+                {
+                  username: data.emailOrUsername
+                }
+              ]
+            },
+          })
+
+          if (student === null || student === undefined) return null
+
+          return student
+        }
+      }
+    })
+  }
+})
+
+export const SignInStudentInput = inputObjectType({
+  name: 'SignInStudentInput',
+  definition(t) {
+    t.nonNull.string('emailOrUsername')
+    t.nonNull.string('password')
   }
 })
 
 export const UserCreateInput = inputObjectType({
-  name: 'UserCreateInput',
+  name: 'CreateStudentInput',
   definition(t) {
     t.nonNull.string('username');
     t.nonNull.string('firstName');

@@ -38,12 +38,16 @@ export interface NexusGenInputs {
     tags: string[]; // [String!]!
     title: string; // String!
   }
-  UserCreateInput: { // input type
+  CreateStudentInput: { // input type
     email: string; // String!
     firstName: string; // String!
     lastName: string; // String!
     password: string; // String!
     username: string; // String!
+  }
+  SignInStudentInput: { // input type
+    emailOrUsername: string; // String!
+    password: string; // String!
   }
 }
 
@@ -127,6 +131,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createQuestion: NexusGenRootTypes['Question'] | null; // Question
+    signinStudent: NexusGenRootTypes['Student'] | null; // Student
     signupStudent: NexusGenRootTypes['Student'] | null; // Student
   }
   Query: { // field return type
@@ -200,6 +205,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createQuestion: 'Question'
+    signinStudent: 'Student'
     signupStudent: 'Student'
   }
   Query: { // field return type name
@@ -270,8 +276,11 @@ export interface NexusGenArgTypes {
     createQuestion: { // args
       data: NexusGenInputs['CreateQuestionInput']; // CreateQuestionInput!
     }
+    signinStudent: { // args
+      data: NexusGenInputs['SignInStudentInput']; // SignInStudentInput!
+    }
     signupStudent: { // args
-      data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
+      data: NexusGenInputs['CreateStudentInput']; // CreateStudentInput!
     }
   }
   Query: {

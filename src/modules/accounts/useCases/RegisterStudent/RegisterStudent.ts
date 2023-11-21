@@ -3,6 +3,7 @@ import { Student } from "../../domain/Student";
 import { StudentMapper } from "../../mappers/StudentMapper";
 import { IStudentRepository } from "../../repositories/IStudentRepository";
 import { IRegisterStudentRequestDTO } from "./RegisterStudentDTO";
+import bcrypt from 'bcrypt';
 
 export class RegisterStudent {
   constructor(
@@ -21,7 +22,10 @@ export class RegisterStudent {
       throw new Error('Usuário com este nome de usuário já existe');
     }
 
-    const password = new Password(data.password)
+    const saltRounds = 12
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds)
+
+    const password = new Password(hashedPassword)
 
     const student = Student.create({
       username: data.username,
