@@ -3,6 +3,7 @@ import { makeCreateStudentController } from "@/infra/http/factories/controllers/
 import { Student as StudentRaw, Question as QuestionRaw } from "@prisma/client";
 import { arg, inputObjectType, mutationType, nonNull } from "nexus";
 import bcrypt from "bcrypt"
+import { AuthResponse } from "@/core/infra/AuthResponse";
 
 const Mutation = mutationType({
   definition(t) {
@@ -47,7 +48,7 @@ const Mutation = mutationType({
           })
         )
       },
-      resolve: async (_parent, { data }, { prisma }): Promise<StudentRaw | null | undefined> => {
+      resolve: async (_parent, { data }, { prisma }): Promise<AuthResponse | null> => {
         const passwordHash = await prisma.student.findFirst({
           where: {
             OR: [

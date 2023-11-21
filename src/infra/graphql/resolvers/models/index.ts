@@ -4,5 +4,6 @@ import Student from "./Student";
 import Stuuke from "./Stuuke";
 import Tag from "./Tag";
 import Course from "./Course";
+import AuthPayload from "./AuthPayload";
 
-export { Question, Reference, Student, Stuuke, Tag, Course }
+export { Question, Reference, Student, Stuuke, Tag, Course, AuthPayload }
