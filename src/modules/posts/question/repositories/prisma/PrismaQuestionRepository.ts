@@ -25,10 +25,22 @@ export class PrismaQuestionRepository implements IQuestionRepository {
 
   }
 
-  async create(question: Question): Promise<void> {
+  async create(question: Question): Promise<void | null> {
     const data = QuestionMapper.toPersistence(question)
 
     try {
+
+      const course = await prisma.course.findFirst({
+        where: {
+          title: data.courseId
+        },
+        select: {
+          id: true
+        }
+      })
+
+      if (course === null) return null
+      console.log("course ID = ", course.id)
 
       await prisma.question.create({
         data: {
@@ -38,7 +50,7 @@ export class PrismaQuestionRepository implements IQuestionRepository {
           createdAt: data.createdAt,
           studentId: data.studentId,
           isDraft: data.isDraft,
-          courseId: data.courseId
+          courseId: course.id
         }
       })
 

@@ -13,7 +13,7 @@
   "dependencies": {
     "@fastify/cors": "^8.3.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "^5.4.2",
+    "@prisma/client": "^5.6.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
@@ -31,7 +31,7 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.5.3",
     "module-alias": "^2.2.3",
-    "prisma": "^5.4.2",
+    "prisma": "^5.6.0",
     "prisma-erd-generator": "^1.11.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"

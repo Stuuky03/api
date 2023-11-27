@@ -45,6 +45,16 @@ export interface NexusGenInputs {
     password: string; // String!
     username: string; // String!
   }
+  CreateStuukeInput: { // input type
+    content: string; // String!
+    courseId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    isDraft: boolean; // Boolean!
+    questionId: string; // String!
+    studentId: string; // String!
+    tags: string[]; // [String!]!
+    title: string; // String!
+  }
   SignInStudentInput: { // input type
     emailOrUsername: string; // String!
     password: string; // String!
@@ -64,6 +74,9 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+  }
   Course: { // root type
     description: string; // String!
     id: string; // ID!
@@ -124,6 +137,9 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+  }
   Course: { // field return type
     description: string; // String!
     id: string; // ID!
@@ -131,6 +147,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createQuestion: NexusGenRootTypes['Question'] | null; // Question
+    createStuuke: NexusGenRootTypes['Stuuke'] | null; // Stuuke
     signinStudent: NexusGenRootTypes['Student'] | null; // Student
     signupStudent: NexusGenRootTypes['Student'] | null; // Student
   }
@@ -198,6 +215,9 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+  }
   Course: { // field return type name
     description: 'String'
     id: 'ID'
@@ -205,6 +225,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createQuestion: 'Question'
+    createStuuke: 'Stuuke'
     signinStudent: 'Student'
     signupStudent: 'Student'
   }
@@ -275,6 +296,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createQuestion: { // args
       data: NexusGenInputs['CreateQuestionInput']; // CreateQuestionInput!
+    }
+    createStuuke: { // args
+      data: NexusGenInputs['CreateStuukeInput']; // CreateStuukeInput!
     }
     signinStudent: { // args
       data: NexusGenInputs['SignInStudentInput']; // SignInStudentInput!

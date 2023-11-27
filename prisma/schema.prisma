@@ -132,29 +132,29 @@ model TagsOnPosts {
 }
 
 model Stuuke {
-  id         String             @id
+  id         String        @id
   title      String
   content    String
   createdAt  DateTime
-  references StuukeReferences[]
-  student    Student            @relation(fields: [studentId], references: [id])
+  // references StuukeReferences[]
+  student    Student       @relation(fields: [studentId], references: [id])
   studentId  String
-  question   Question           @relation(fields: [questionId], references: [id])
+  question   Question      @relation(fields: [questionId], references: [id])
   questionId String
-  isDraft    Boolean            @default(true)
+  isDraft    Boolean       @default(true)
   tags       TagsOnPosts[]
-  course     Course             @relation(fields: [courseId], references: [id])
+  course     Course        @relation(fields: [courseId], references: [id])
   courseId   String
 
   @@map("stuuke")
 }
 
-model StuukeReferences {
-  id       String @id
-  title    String
-  url      String
-  stuuke   Stuuke @relation(fields: [stuukeId], references: [id])
-  stuukeId String
+// model StuukeReferences {
+//   id       String @id
+//   title    String
+//   url      String
+//   stuuke   Stuuke @relation(fields: [stuukeId], references: [id])
+//   stuukeId String
 
-  @@map("stuukeReferences")
-}
+//   @@map("stuukeReferences")
+// }

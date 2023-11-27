@@ -9,14 +9,17 @@ export class CreateQuestion {
 
   async execute(data: ICreateQuestionDTO) {
 
+    const contentEncoded = Buffer.from(data.content).toString("base64")
+
     const question = Question.create({
       title: data.title,
-      content: data.content,
+      content: contentEncoded,
       createdAt: data.createdAt,
       studentId: data.studentId,
       isDraft: data.isDraft,
       courseId: data.courseId
     })
+
 
     const questionTags = data.tags.map(tagId => {
       return QuestionTag.create({
